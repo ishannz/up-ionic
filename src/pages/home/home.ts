@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 import { DashboardPage, PredictionsPage, SignupPage, StandingsPage } from '../';
 import { AuthProvider } from '../../providers/auth/auth';
+import { Storage } from '@ionic/storage';
+
 
 @Component({
   selector: 'page-home',
@@ -25,8 +27,29 @@ export class HomePage {
     private toastCtrl: ToastController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private auth: AuthProvider
-  ) {
+    private auth: AuthProvider,
+    private storage: Storage
+  ) {}
+
+  ionViewCanEnter() {
+    const loading = this.loadingCtrl.create({
+      content: 'Loading'
+    });
+
+    loading.present();
+
+    return this.auth.isAuthenticated()
+      .then(authenticated => {
+        if (authenticated) {
+          this.navCtrl.push(DashboardPage);
+        }
+
+        loading.dismiss();
+      });
+  }
+
+  ionViewCanLeave() {
+    return true;
   }
 
   public doLogin() {
@@ -38,6 +61,7 @@ export class HomePage {
     this.auth.login(this.formInputs.email, this.formInputs.password)
       .subscribe(
         response => {
+          this.storage.set('authToken', response.headers.get('token'));
           this.navCtrl.push(DashboardPage);
           loading.dismiss();
         },

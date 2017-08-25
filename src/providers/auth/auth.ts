@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Storage } from '@ionic/storage';
 
 /*
   Generated class for the AuthProvider provider.
@@ -11,7 +12,10 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthProvider {
 
-  constructor(public http: Http) {
+  constructor(
+    public http: Http,
+    public storage: Storage
+  ) {
     console.log('Hello AuthProvider Provider');
   }
 
@@ -25,6 +29,18 @@ export class AuthProvider {
   }
 
   logout() {
+
+  }
+
+  isAuthenticated () {
+    return this.storage.get('authToken')
+      .then((val) => {
+        if(val) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   }
 
 }

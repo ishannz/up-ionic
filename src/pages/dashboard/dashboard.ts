@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { PredictionsPage, SignupPage, StandingsPage } from '../';
+import { AuthProvider } from '../../providers/auth/auth';
 
 /**
  * Generated class for the DashboardPage page.
@@ -22,8 +23,13 @@ export class DashboardPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public auth: AuthProvider
   ) {
+  }
+
+  ionViewCanEnter() {
+    return this.auth.isAuthenticated();
   }
 
 }

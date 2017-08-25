@@ -8,6 +8,7 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { HomePage, DashboardPage, PredictionsPage, SignupPage, StandingsPage } from '../pages';
 import { AuthProvider } from '../providers/auth/auth';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthProvider } from '../providers/auth/auth';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    HttpModule
+    HttpModule,
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
